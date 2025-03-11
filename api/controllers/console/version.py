@@ -19,6 +19,7 @@ class VersionApi(Resource):
 
         result = {
             "version": dify_config.CURRENT_VERSION,
+            "commit_sha": dify_config.COMMIT_SHA,
             "release_date": "",
             "release_notes": "",
             "can_auto_update": False,

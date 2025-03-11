@@ -36,7 +36,14 @@ export default function AccountAbout({
         </div>
         <div>
           <LogoSite className='mx-auto mb-2' />
-          <div className='mb-3 text-center text-xs font-normal text-text-tertiary'>Version {langeniusVersionInfo?.current_version}</div>
+          <div className='mb-3 text-center text-xs font-normal text-text-tertiary'>
+            Version {langeniusVersionInfo?.current_version}
+            {langeniusVersionInfo?.commit_sha && (
+              <div className='text-xs text-gray-500'>
+                Commit {langeniusVersionInfo.commit_sha.replace(/^(.*-)?(.{7}).*$/, '$1$2')}
+              </div>
+            )}
+          </div>
           <div className='mb-4 text-center text-xs font-normal text-text-secondary'>
             <div>© {dayjs().year()} LangGenius, Inc., Contributors.</div>
             <div className='text-text-accent'>

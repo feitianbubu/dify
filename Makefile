@@ -2,8 +2,9 @@
 DOCKER_REGISTRY=langgenius
 WEB_IMAGE=$(DOCKER_REGISTRY)/dify-web
 API_IMAGE=$(DOCKER_REGISTRY)/dify-api
-VERSION=latest
-
+VERSION=dev
+COMMIT_SHA=sky-$(VERSION)-$(shell git rev-parse HEAD)
+LOG_LEVEL=DEBUG
 # Build Docker images
 build-web:
 	@echo "Building web Docker image: $(WEB_IMAGE):$(VERSION)..."
@@ -12,7 +13,7 @@ build-web:
 
 build-api:
 	@echo "Building API Docker image: $(API_IMAGE):$(VERSION)..."
-	docker build -t $(API_IMAGE):$(VERSION) ./api
+	docker build -t $(API_IMAGE):$(VERSION) ./api --build-arg COMMIT_SHA=$(COMMIT_SHA)
 	@echo "API Docker image built successfully: $(API_IMAGE):$(VERSION)"
 
 # Push Docker images
@@ -41,3 +42,16 @@ build-push-all: build-all push-all
 
 # Phony targets
 .PHONY: build-web build-api push-web push-api build-all push-all build-push-all
+
+build-restart-api: build-api
+	export LOG_LEVEL=$(LOG_LEVEL)
+	export BILLING_ENABLED=true
+	cd docker && docker-compose down api && docker-compose up -d api
+
+build-restart-web: build-web
+	export LOG_LEVEL=$(LOG_LEVEL)
+	cd docker && docker-compose down web && docker-compose up -d web
+
+build-restart-all: build-api build-web
+	cd docker && docker-compose down && docker-compose up -d
+

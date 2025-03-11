@@ -47,6 +47,7 @@ export type LangGeniusVersionResponse = {
   release_notes: string
   can_auto_update: boolean
   current_env: string
+  commit_sha: string
 }
 
 export type TenantInfoResponse = {
