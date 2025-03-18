@@ -45,7 +45,6 @@ build-push-all: build-all push-all
 
 build-restart-api: build-api
 	export LOG_LEVEL=$(LOG_LEVEL)
-	export BILLING_ENABLED=true
 	cd docker && docker-compose down api && docker-compose up -d api
 
 build-restart-web: build-web

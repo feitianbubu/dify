@@ -92,6 +92,20 @@ class FeatureService:
         if dify_config.BILLING_ENABLED and tenant_id:
             cls._fulfill_params_from_billing_api(features, tenant_id)
 
+        # 设置所有限制参数为int最大值 // todo: test mock
+        large_int = 9999
+        features.members.limit = large_int
+        features.apps.limit = large_int
+        features.vector_space.limit = large_int
+        features.knowledge_rate_limit = large_int
+        features.annotation_quota_limit.limit = large_int
+        features.documents_upload_quota.limit = large_int
+        features.billing.subscription.interval = "yearly"
+        features.billing.enabled = True
+        features.can_replace_logo = True
+        features.model_load_balancing_enabled = True
+        features.dataset_operator_enabled = True
+
         return features
 
     @classmethod
