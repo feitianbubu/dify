@@ -45,4 +45,30 @@ server {
 
     # placeholder for https config defined in https.conf.template
     ${HTTPS_CONFIG}
+
+    #====admin start
+    location /admin {
+        root /var/www/html;
+        add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
+        try_files $uri $uri/ /index.html;
+    }
+    location /admin/api {
+        proxy_set_header Host $http_host;
+        proxy_set_header  X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        rewrite ^/admin/api/(.*)$ /$1 break;  #重写
+        proxy_pass http://host.docker.internal:8888; # 设置代理服务器的协议和地址
+     }
+    location  /admin/form-generator {
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_pass http://host.docker.internal:8888;
+    }
+    location /docs/index.html {
+        proxy_pass http://127.0.0.1:8888/docs/index.html;
+    }
+    #====admin end
 }

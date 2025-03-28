@@ -7,7 +7,7 @@ COMMIT_SHA=sky-$(VERSION)-$(shell git rev-parse HEAD)
 LOG_LEVEL=DEBUG
 # Build Docker images
 build-web:
-	@echo "Building web Docker image: $(WEB_IMAGE):$(VERSION)..."
+	@echo "Building web Docker image: $(WEB_IMAGE):$(VERSION)...$(COMMIT_SHA)"
 	docker build -t $(WEB_IMAGE):$(VERSION) ./web
 	@echo "Web Docker image built successfully: $(WEB_IMAGE):$(VERSION)"
 
