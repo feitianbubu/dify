@@ -41,7 +41,7 @@ class ProviderCredentialsCache:
         :param credentials: provider credentials
         :return:
         """
-        redis_client.setex(self.cache_key, 86400, json.dumps(credentials))
+        redis_client.setex(self.cache_key, 8640000, json.dumps(credentials)) #todo by sky go decrypted, now use this for test
 
     def delete(self) -> None:
         """
